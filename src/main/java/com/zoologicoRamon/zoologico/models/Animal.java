@@ -20,8 +20,11 @@ public class Animal {
     private String adaptacion;
     private String amenazas;
     private int id_especie;
+    private String nombre_especie;
     private int id_zona;
+    private String nombre_zona;
     private int id_ecosistema;
+    private String nombre_ecosistema;
 
 
     public Animal(String nombre_animal, String e_conservacion, String dieta, String reproduccion, String adaptacion, String amenazas, int id_especie, int id_zona, int id_ecosistema) {

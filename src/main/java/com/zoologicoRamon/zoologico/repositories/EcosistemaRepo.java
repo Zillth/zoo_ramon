@@ -26,7 +26,9 @@ public class EcosistemaRepo implements ICrud<Ecosistema>{
         ResultSet s = connection.executeQuery(sql);
         List<Ecosistema> ecosistemas = new ArrayList<Ecosistema>();
         while (s.next()) {
-            ecosistemas.add(getByResultSet(s));
+            ecosistemas.add(new Ecosistema(
+                s.getInt("id_ecosistema"),
+                s.getString("nombre_ecosistema")));
         }
         connection.disconnect();
         return ecosistemas;
@@ -38,7 +40,9 @@ public class EcosistemaRepo implements ICrud<Ecosistema>{
         ResultSet s = connection.executeQuery(sql);
         Ecosistema ecosistema;
         if (s.next()) {
-            ecosistema = getByResultSet(s);
+            ecosistema = new Ecosistema(
+                s.getInt("id_ecosistema"),
+                s.getString("nombre_ecosistema"));
             connection.disconnect();
             return ecosistema;
         }

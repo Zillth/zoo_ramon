@@ -11,7 +11,7 @@ import com.zoologicoRamon.zoologico.interfaces.ICrud;
 import com.zoologicoRamon.zoologico.models.ZonaExhibicion;
 
 @Repository
-public class ZonaExhibicionRepo implements ICrud<ZonaExhibicion>{
+public class ZonaExhibicionRepo implements ICrud<ZonaExhibicion> {
 
     @Override
     public ZonaExhibicion getByResultSet(ResultSet s) throws SQLException {
@@ -27,7 +27,10 @@ public class ZonaExhibicionRepo implements ICrud<ZonaExhibicion>{
         ResultSet s = connection.executeQuery(sql);
         List<ZonaExhibicion> zonas = new ArrayList<ZonaExhibicion>();
         while (s.next()) {
-            zonas.add(getByResultSet(s));
+            zonas.add(new ZonaExhibicion(
+                    s.getInt("id_zona"),
+                    s.getString("nombre_zona"),
+                    s.getString("horario_zona")));
         }
         connection.disconnect();
         return zonas;
@@ -39,7 +42,10 @@ public class ZonaExhibicionRepo implements ICrud<ZonaExhibicion>{
         ResultSet s = connection.executeQuery(sql);
         ZonaExhibicion zona_exhibicion;
         if (s.next()) {
-            zona_exhibicion = getByResultSet(s);
+            zona_exhibicion = new ZonaExhibicion(
+                    s.getInt("id_zona"),
+                    s.getString("nombre_zona"),
+                    s.getString("horario_zona"));
             connection.disconnect();
             return zona_exhibicion;
         }
@@ -86,5 +92,5 @@ public class ZonaExhibicionRepo implements ICrud<ZonaExhibicion>{
             throw new SQLException("ZonaExhibicion update error");
         }
     }
-    
+
 }

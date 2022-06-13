@@ -14,11 +14,27 @@ import com.zoologicoRamon.zoologico.models.Animal;
 public class AnimalRepo implements ICrud<Animal> {
     @Override
     public List<Animal> getAll() throws SQLException {
-        String sql = String.format("select * from animal");
+        String sql = String.format("select * from animal a " +
+                "inner join especie e on a.id_especie = e.id_especie " +
+                "inner join ecosistema ec on a.id_ecosistema = ec.id_ecosistema " +
+                "inner join zona_exhibicion z on a.id_zona = z.id_zona");
         ResultSet s = connection.executeQuery(sql);
         List<Animal> animales = new ArrayList<Animal>();
         while (s.next()) {
-            animales.add(getByResultSet(s));
+            animales.add(new Animal(
+                    s.getInt("id_animal"),
+                    s.getString("nombre_animal"),
+                    s.getString("e_conservacion"),
+                    s.getString("dieta"),
+                    s.getString("reproduccion"),
+                    s.getString("adaptacion"),
+                    s.getString("amenazas"),
+                    s.getInt("id_especie"),
+                    s.getString("nombre_especie"),
+                    s.getInt("id_zona"),
+                    s.getString("nombre_zona"),
+                    s.getInt("id_ecosistema"),
+                    s.getString("nombre_ecosistema")));
         }
         connection.disconnect();
         return animales;
@@ -26,11 +42,27 @@ public class AnimalRepo implements ICrud<Animal> {
 
     @Override
     public Animal getById(int id) throws SQLException {
-        String sql = String.format("select * from animal where id_animal = %d", id);
+        String sql = String.format("select * from animal a " +
+                "inner join especie e on a.id_especie = e.id_especie " +
+                "inner join ecosistema ec on a.id_ecosistema = ec.id_ecosistema " +
+                "inner join zona_exhibicion z on a.id_zona = z.id_zona where id_animal = %d", id);
         ResultSet s = connection.executeQuery(sql);
         Animal Animal;
         if (s.next()) {
-            Animal = getByResultSet(s);
+            Animal = new Animal(
+                    s.getInt("id_animal"),
+                    s.getString("nombre_animal"),
+                    s.getString("e_conservacion"),
+                    s.getString("dieta"),
+                    s.getString("reproduccion"),
+                    s.getString("adaptacion"),
+                    s.getString("amenazas"),
+                    s.getInt("id_especie"),
+                    s.getString("nombre_especie"),
+                    s.getInt("id_zona"),
+                    s.getString("nombre_zona"),
+                    s.getInt("id_ecosistema"),
+                    s.getString("nombre_ecosistema"));
             connection.disconnect();
             return Animal;
         }
@@ -111,8 +143,11 @@ public class AnimalRepo implements ICrud<Animal> {
                 s.getString("adaptacion"),
                 s.getString("amenazas"),
                 s.getInt("id_especie"),
+                s.getString("nombre_especie"),
                 s.getInt("id_zona"),
-                s.getInt("id_ecosistema"));
+                s.getString("nombre_zona"),
+                s.getInt("id_ecosistema"),
+                s.getString("nombre_ecosistema"));
     }
 
 }

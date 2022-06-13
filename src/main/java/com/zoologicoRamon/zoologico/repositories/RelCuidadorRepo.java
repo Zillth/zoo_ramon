@@ -17,17 +17,26 @@ public class RelCuidadorRepo implements ICrudRel<RelCuidador> {
     public RelCuidador getByResultSet(ResultSet s) throws SQLException {
         return new RelCuidador(
                 s.getInt("id_cuidador"),
+                s.getString("nombre_cuidador"),
                 s.getInt("id_animal"),
+                s.getString("nombre_animal"),
                 s.getString("horario_cuida"));
     }
 
     @Override
     public List<RelCuidador> getAll() throws SQLException {
-        String sql = String.format("select * from rel_cuidador");
+        String sql = String.format("select * from rel_cuidador r " +
+                "inner join animal a on a.id_animal = r.id_animal " +
+                "inner join cuidador c on c.id_cuidador = r.id_cuidador");
         ResultSet s = connection.executeQuery(sql);
         List<RelCuidador> relCuidadores = new ArrayList<RelCuidador>();
         while (s.next()) {
-            relCuidadores.add(getByResultSet(s));
+            relCuidadores.add(new RelCuidador(
+                    s.getInt("id_cuidador"),
+                    s.getString("nombre_cuidador"),
+                    s.getInt("id_animal"),
+                    s.getString("nombre_animal"),
+                    s.getString("horario_cuida")));
         }
         connection.disconnect();
         return relCuidadores;
@@ -35,12 +44,20 @@ public class RelCuidadorRepo implements ICrudRel<RelCuidador> {
 
     @Override
     public RelCuidador getById(int id1, int id2) throws SQLException {
-        String sql = String.format("select * from rel_cuidador where id_cuidador = %1$d and id_animal = %2$d", id1,
+        String sql = String.format("select * from rel_cuidador r " +
+                "inner join animal a on a.id_animal = r.id_animal " +
+                "inner join cuidador c on c.id_cuidador = r.id_cuidador where id_cuidador = %1$d and id_animal = %2$d",
+                id1,
                 id2);
         ResultSet s = connection.executeQuery(sql);
         RelCuidador rel_cuidador;
         if (s.next()) {
-            rel_cuidador = getByResultSet(s);
+            rel_cuidador = new RelCuidador(
+                    s.getInt("id_cuidador"),
+                    s.getString("nombre_cuidador"),
+                    s.getInt("id_animal"),
+                    s.getString("nombre_animal"),
+                    s.getString("horario_cuida"));
             connection.disconnect();
             return rel_cuidador;
         }

@@ -26,7 +26,9 @@ public class EspecieRepo implements ICrud<Especie> {
         ResultSet s = connection.executeQuery(sql);
         List<Especie> cuidadores = new ArrayList<Especie>();
         while (s.next()) {
-            cuidadores.add(getByResultSet(s));
+            cuidadores.add(new Especie(
+                s.getInt("id_especie"),
+                s.getString("nombre_especie")));
         }
         connection.disconnect();
         return cuidadores;
@@ -38,7 +40,9 @@ public class EspecieRepo implements ICrud<Especie> {
         ResultSet s = connection.executeQuery(sql);
         Especie especie;
         if (s.next()) {
-            especie = getByResultSet(s);
+            especie = new Especie(
+                s.getInt("id_especie"),
+                s.getString("nombre_especie"));
             connection.disconnect();
             return especie;
         }

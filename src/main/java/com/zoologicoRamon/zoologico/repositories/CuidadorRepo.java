@@ -28,7 +28,11 @@ public class CuidadorRepo implements ICrud<Cuidador> {
         ResultSet s = connection.executeQuery(sql);
         List<Cuidador> cuidadores = new ArrayList<Cuidador>();
         while (s.next()) {
-            cuidadores.add(getByResultSet(s));
+            cuidadores.add(new Cuidador(
+                    s.getInt("id_cuidador"),
+                    s.getString("rfc"),
+                    s.getString("nombre_cuidador"),
+                    s.getString("telefono")));
         }
         connection.disconnect();
         return cuidadores;
@@ -40,7 +44,11 @@ public class CuidadorRepo implements ICrud<Cuidador> {
         ResultSet s = connection.executeQuery(sql);
         Cuidador cuidador;
         if (s.next()) {
-            cuidador = getByResultSet(s);
+            cuidador = new Cuidador(
+                    s.getInt("id_cuidador"),
+                    s.getString("rfc"),
+                    s.getString("nombre_cuidador"),
+                    s.getString("telefono"));
             connection.disconnect();
             return cuidador;
         }
